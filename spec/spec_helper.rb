@@ -1,10 +1,10 @@
 #file: spec/spec_helper.rb
 
-require 'database_connection'
+require_relative '/Users/chayadasansiriwong/Desktop/csanann/Projects/chitter-challenge/config/database_connection.rb'
 require 'simplecov'
 require 'simplecov-console'
 
-DatabaseConnection.connect('chitter_test')
+DatabaseConnection.connect('chitter')
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
   SimpleCov::Formatter::Console,

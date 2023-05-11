@@ -1,15 +1,5 @@
 #file: app/models/peep.rb
 
-class Peep < ApplicationRecord
-    belongs_to :user
-  
-    validates :message, presence: true
-  
-    def username
-      user.username
-    end
-  
-    def self.public_stream
-      order(timestamp: :desc)
-    end
-  end
+class Peep 
+  attr_accessor :id, :message, :timestamp,:user_id
+end

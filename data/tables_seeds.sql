@@ -27,18 +27,20 @@ CREATE TABLE peeps_users (
   PRIMARY KEY (peep_id, user_id)
 );
 
+TRUNCATE TABLE users, peeps, peeps_users RESTART IDENTITY;
+
 -- Insert sample data
 INSERT INTO users (email, password, name, username)
 VALUES
-  ('hello@gmail.com', 'password', 'Bob', 'bob678'),
-  ('fred@gmail.com', '123', 'Fred', 'freddo');
+  ('hothot@hotmail.com', 'dada123', 'ken', 'ken8989'),
+  ('starjan@hotmail.com', 'atjan1234', 'jan', 'jan2345');
 
-INSERT INTO peeps (message, user_id)
+INSERT INTO peeps (message, timestamp, user_id)
 VALUES
-  ('Hello world! This is Bob.', 1),
-  ('I just posted a great peep.', 2),
-  ('Bob, your peep is awesome!', 1),
-  ('Tagging Fred in this peep!', 2);
+  ('My name is Ken YoohaaaYoo.', '2023-05-11 09:09:08', 1),
+  ('What a lovely peep.', '2023-05-11 09:08:08', 2),
+  ('Freddi cocoo is coming.','2023-05-11 09:07:08', 1),
+  ('Hey you!','2023-05-11 09:07:07', 2);
 
 INSERT INTO peeps_users (peep_id, user_id)
 VALUES
