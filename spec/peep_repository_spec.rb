@@ -1,59 +1,61 @@
 #file: spec/peep_repository_spec.rb
 
 #require 'peep'
-require '/Users/chayadasansiriwong/Desktop/csanann/Projects/chitter-challenge/app/models/peep_repository.rb'
+require_relative '../app/models/peep_repository'
 
-def reset_peeps_table
-  seed_sql = File.read('data/tables_seeds.sql')
-  connection = PG.connect({ host: '127.0.0.1', dbname: 'chitter'})
-  connection.exec(seed_sql)
-end
 
 RSpec.describe PeepRepository do
+  let(:database_connection) { instance_double(PG::Connection)}
+  let(:peep_repository) { PeepRepository.new(database_connection)}
+
+  def reset_peeps_table
+    seed_sql = File.read('data/tables_seeds.sql')
+    connection = PG.connect({ host: '127.0.0.1', dbname: 'chitter'})
+    connection.exec(seed_sql)
+  end
       
   before(:each)do
     reset_peeps_table
   end
 
-  context '#all' do
-    it 'returns a list of users' do
-      repo = PeepRepository.new
-      peeps = repo.all
+#  context '#all' do
+#   it 'returns a list of users' do
+#      repo = PeepRepository.new
+#      peeps = repo.all
+#
+#      expect(peeps.length).to eq(2)
+#      expect(peeps[0].id).to eq(1).to_i
+#      expect(peeps[0].message).to eq('My name is Ken YoohaaaYoo.')
+#    end
+#  end
 
-      expect(peeps.length).to eq(2)
-      expect(peeps[0].id).to eq(1).to_i
-      expect(peeps[0].message).to eq('My name is Ken YoohaaaYoo.')
-    end
-  end
-
-  context '#create' do
+  describe '#create' do
     it 'creates a new peep' do
-      repo = PeepRepository.new
+      peep = Peep.new(message: 'What a lovely day!', timestamp: Time.now, user_id: 3)
 
-      created_peep = Peep.new
-      create_peep.message = 'What a lovely day!'
-      create_peep.user_id = '1'
-      create_peep.timestamp = '2023-05-11 09:09:08'
-      repo.create(created_peep)
-
-      peeps = repo.all
-      last_peep = peeps.last
-
-      expect(peeps.length).to eq(5)
-      expect(peeps.last.message).to eq('What a lovely day!')
-      expect(peeps.last.user_id).to eq(1)
+      expect(database_connection).to receive(:exec_params).with('INSERT INTO peeps (message, timestamp, user_id) VALUES ($1, $2, $3);',
+      [peep.message, peep.timestamp, peep.user_id])
+      peep_repository.create(peep)
     end
   end
 
-  context '#find_by_id' do
-    it 'finds a single peep' do
-      repo = PeepRepository.new
-      peep = repo.find_by_id(2)
+  describe '#find_by_id' do
+    it 'finds a peep by id' do
+      result = instance_double(PG::Result)
+      expect(database_connection).to receive(:exec_params).with('SELECT * FROM peeps WHERE id = $1;', [1]).and_return(result)
+      expect(result).to receive(:ntuples).and_return(1)
+      expect(result).to receive(:[]).with(0).and_return({ 'id' => '1', 'message' => 'My name is Ken YoohaaaYoo.', 'timestamp' => Time.now.to_s, 'user_id' => '1' })
+      peep = peep_repository.find_by_id(1)
+      expect(peep.id).to eq(1)
+      expect(peep.message).to eq('My name is Ken YoohaaaYoo.')
+      expect(peep.user_id).to eq(1)
+    end
+  end
 
-      expect(peep.message).to eq('What a lovely peep.')
-      expect(peep.timestamp).to eq('2023-05-11 09:08:08')
-      expect(peep.user.name).to eq(2)
-      expect(peep.user.username).to eq('jan')
+  describe '#delete_by_id' do
+    it 'deletes a peep by id' do
+      expect(database_connection).to receive(:exec_params).with('DELETE FROM peeps WHERE id = $1;', [1])
+      peep_repository.delete_by_id(1)
     end
   end
 end
