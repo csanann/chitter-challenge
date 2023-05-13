@@ -1,7 +1,7 @@
 #file: spec/peep_repository_spec.rb
 
 #require 'peep'
-require_relative '../app/models/peep_repository'
+require 'peep_repository'
 
 
 RSpec.describe PeepRepository do
@@ -9,7 +9,7 @@ RSpec.describe PeepRepository do
   let(:peep_repository) { PeepRepository.new(database_connection)}
 
   def reset_peeps_table
-    seed_sql = File.read('data/tables_seeds.sql')
+    seed_sql = File.read('spec/tables_seeds.sql')
     connection = PG.connect({ host: '127.0.0.1', dbname: 'chitter'})
     connection.exec(seed_sql)
   end

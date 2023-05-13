@@ -1,5 +1,5 @@
-#file: app/models/peep_repository.rb
-require_relative '../models/peep'
+#file: lib/peep_repository.rb
+require 'peep'
 
 
 =begin

@@ -1,6 +1,6 @@
 #file: spec/spec_helper.rb
 
-require_relative '/Users/chayadasansiriwong/Desktop/csanann/Projects/chitter-challenge/config/database_connection.rb'
+require 'database_connection'
 require 'simplecov'
 require 'simplecov-console'
 

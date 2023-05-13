@@ -1,15 +1,15 @@
 #file: spec/user_repository_spec.rb
 
 require 'spec_helper'
-require_relative '/Users/chayadasansiriwong/Desktop/csanann/Projects/chitter-challenge/app/models/user_repository.rb'
+require 'lib/user_repository'
 
-#require_relative '../user_repository'
-require_relative '/Users/chayadasansiriwong/Desktop/csanann/Projects/chitter-challenge/app/models/user.rb'
+#require_relative 'user_repository'
+require 'user'
 require 'bcrypt'
 
 RSpec.describe UserRepository do
   def reset_users_table
-    seed_sql = File.read('data/tables_seeds.sql')
+    seed_sql = File.read('ables_seeds.sql')
     connection = PG.connect({ host: '127.0.0.1', dbname: 'chitter' })
     connection.exec(seed_sql)
   end

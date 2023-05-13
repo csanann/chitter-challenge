@@ -1,0 +1,16 @@
+<!-- app/views/index.erb -->
+
+<!-- Display a list of all Peeps and includes a form for the user to create a new peep -->
+<h1>All Peeps</h1>
+
+<ul>
+  <% @peeps.each do |peep| %>
+    <li><%= peep.message %> - <%= peep.timestamp %></li>
+  <% end %>
+</ul>
+
+<form action="/peeps" method="post">
+  <label for="peep">New Peep:</label>
+  <input type="text" id="peep" name="peep[message]">
+  <input type="submit" value="Peep">
+</form>

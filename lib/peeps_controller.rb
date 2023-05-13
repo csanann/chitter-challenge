@@ -1,10 +1,10 @@
-#file: app/controllers/peeps_controller.rb
+#file: lib/peeps_controller.rb
 
 #Function: to responds to HTTP requests.
 #it reads data from the models and pass the data to a view to be rendered as HTML
 
 require 'sinatra/base'
-require_relative '../models/peep_repository'
+require 'peep_repository'
 
 class PeepsController < Sinatra::Base
   set :views, 'app/views'

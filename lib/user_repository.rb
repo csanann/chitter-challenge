@@ -1,6 +1,6 @@
-#file: app/models/user_repository.rb
+#file: lib/user_repository.rb
 
-require_relative 'user'
+require 'user'
 require 'bcrypt'
 
 
